@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="Controllers\HomeController.cs\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Remove="Controllers\HomeController.cs\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Controllers\HomeController.cs\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Remove="Controllers\HomeController.cs\**"/>
+    </ItemGroup>
+
+</Project>
