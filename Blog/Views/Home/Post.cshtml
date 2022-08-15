@@ -1,1 +1,7 @@
+@model Post
+
 <h2>Post Page</h2>
+
+<h4>@Model.Title</h4>
+<span>Created at @Model.Created.ToShortDateString()</span>
+<p>@Model.Body</p>
