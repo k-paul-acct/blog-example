@@ -5,11 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMvc();
 builder.Services.AddDbContext<BlogDbContext>(options =>
     options.UseNpgsql(builder.Configuration["ConnectionString"]));
 builder.Services
-    .AddDefaultIdentity<IdentityUser>(options =>
+    .AddIdentity<IdentityUser, IdentityRole>(options =>
     {
         options.Password.RequiredLength = 4;
         options.Password.RequireDigit = false;
@@ -17,15 +16,13 @@ builder.Services
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequiredUniqueChars = 1;
     })
-    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BlogDbContext>();
+builder.Services.ConfigureApplicationCookie(options => { options.LoginPath = "/Auth/Login"; });
+builder.Services.AddMvc();
 
 builder.Services.AddScoped<IRepository, Repository>();
 
 var app = builder.Build();
-
-app.UseAuthentication();
-app.MapDefaultControllerRoute();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -52,5 +49,9 @@ if (!context.Users.Any(x => x.UserName == "admin"))
     userManager.CreateAsync(adminUser, "admin").GetAwaiter().GetResult();
     userManager.AddToRoleAsync(adminUser, "admin");
 }
+
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapDefaultControllerRoute();
 
 app.Run();

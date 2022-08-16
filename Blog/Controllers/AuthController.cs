@@ -25,8 +25,9 @@ public class AuthController : Controller
         if (ModelState.IsValid)
         {
             await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Panel");
         }
+
         ModelState.AddModelError("Login", "Invalid login attempt");
         return View(model);
     }

@@ -6,9 +6,7 @@
     @foreach (var m in Model)
     {
         <li>
-            <a asp-controller="Home" asp-action="Post" asp-route-id="@m.PostId">@m.Title</a> -
-            <a asp-controller="Home" asp-action="Edit" asp-route-id="@m.PostId">Edit</a> -
-            <a asp-controller="Home" asp-action="Remove" asp-route-id="@m.PostId">Remove</a>
+            <a asp-controller="Home" asp-action="Post" asp-route-id="@m.PostId">@m.Title</a>
         </li>
     }
 </ul>
