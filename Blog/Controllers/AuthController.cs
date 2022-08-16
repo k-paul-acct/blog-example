@@ -22,8 +22,13 @@ public class AuthController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
-        await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
-        return RedirectToAction("Index", "Home");
+        if (ModelState.IsValid)
+        {
+            await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
+            return RedirectToAction("Index", "Home");
+        }
+        ModelState.AddModelError("Login", "Invalid login attempt");
+        return View(model);
     }
 
     [HttpGet]
