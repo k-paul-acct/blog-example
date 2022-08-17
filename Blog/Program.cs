@@ -1,4 +1,5 @@
 using Blog.Data;
+using Blog.Data.FileManager;
 using Blog.Data.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ builder.Services.ConfigureApplicationCookie(options => { options.LoginPath = "/A
 builder.Services.AddMvc();
 
 builder.Services.AddScoped<IRepository, Repository>();
+builder.Services.AddScoped<IFileManager, FileManager>();
 
 var app = builder.Build();
 
@@ -50,6 +52,7 @@ if (!context.Users.Any(x => x.UserName == "admin"))
     userManager.AddToRoleAsync(adminUser, "admin");
 }
 
+app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapDefaultControllerRoute();

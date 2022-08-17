@@ -1,4 +1,5 @@
 using Blog.Models;
+using Blog.ViewModels;
 
 namespace Blog.Data.Repository;
 
@@ -17,25 +18,51 @@ public class Repository : IRepository
         return _context.SaveChanges() > 0;
     }
 
-    public Post? GetPost(Guid id)
+    public PostViewModel? GetPost(Guid id)
     {
-        return _context.Posts.Find(id);
+        var post = _context.Posts.Find(id);
+        if (post == null) return null;
+
+        var postVm = new PostViewModel
+        {
+            PostId = post.PostId,
+            Title = post.Title,
+            Body = post.Body,
+            Created = post.Created,
+            ImageName = post.ImagePath
+        };
+
+        return postVm;
     }
 
-    public IEnumerable<Post> GetAllPosts()
+    public IEnumerable<PostViewModel> GetAllPosts()
     {
-        return _context.Posts.ToList();
+        return _context.Posts.ToList().Select(x => new PostViewModel
+        {
+            PostId = x.PostId,
+            Title = x.Title,
+            Body = x.Body,
+            Created = x.Created,
+            ImageName = x.ImagePath
+        });
     }
 
-    public bool UpdatePost(Post post)
+    public bool UpdatePost(PostViewModel postVm)
     {
+        var post = _context.Posts.Find(postVm.PostId);
+        if (post == null)
+            return false;
+
+        post.Title = postVm.Title;
+        post.Body = postVm.Body;
+
         _context.Posts.Update(post);
         return _context.SaveChanges() > 0;
     }
 
     public bool RemovePost(Guid id)
     {
-        var post = GetPost(id);
+        var post = _context.Posts.Find(id);
         if (post == null)
             return false;
         _context.Remove(post);

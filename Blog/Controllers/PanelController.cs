@@ -1,5 +1,7 @@
+using Blog.Data.FileManager;
 using Blog.Data.Repository;
 using Blog.Models;
+using Blog.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,11 +10,15 @@ namespace Blog.Controllers;
 [Authorize(Roles = "admin")]
 public class PanelController : Controller
 {
+    private readonly IFileManager _fileManager;
     private readonly IRepository _repository;
 
-    public PanelController(IRepository repository)
+    public PanelController(
+        IRepository repository,
+        IFileManager fileManager)
     {
         _repository = repository;
+        _fileManager = fileManager;
     }
 
     public IActionResult Index()
@@ -29,21 +35,30 @@ public class PanelController : Controller
     }
 
     [HttpPost]
-    public IActionResult Edit(Post post)
+    public IActionResult Edit(PostViewModel postVm)
     {
-        _repository.UpdatePost(post);
+        _repository.UpdatePost(postVm);
         return RedirectToAction("Index");
     }
 
     [HttpGet]
     public IActionResult Create()
     {
-        return View(new Post());
+        return View(new PostViewModel());
     }
 
     [HttpPost]
-    public IActionResult Create(Post post)
+    public async Task<IActionResult> Create(PostViewModel postVm)
     {
+        if (postVm.Image == null) return BadRequest();
+        var imagePath = await _fileManager.SaveFile(postVm.Image);
+        var post = new Post
+        {
+            PostId = postVm.PostId,
+            Title = postVm.Title,
+            Body = postVm.Body,
+            ImagePath = imagePath
+        };
         _repository.AddPost(post);
         return RedirectToAction("Post", "Home", new { id = post.PostId });
     }
@@ -51,7 +66,7 @@ public class PanelController : Controller
     [HttpGet]
     public IActionResult Remove(Guid id)
     {
-        var res = _repository.RemovePost(id);
+        _repository.RemovePost(id);
         return RedirectToAction("Index");
     }
 }
