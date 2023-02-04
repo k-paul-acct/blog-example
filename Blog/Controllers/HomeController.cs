@@ -17,18 +17,26 @@ public class HomeController : Controller
         _fileManager = fileManager;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(
+        string? category = null,
+        string? searchQuery = null,
+        int pageNumber = 1,
+        int limit = 5,
+        DateTime? cursorValue = null,
+        bool afterCursor = true)
     {
-        var posts = _repository.GetAllPosts();
-        return View(posts);
+        var page = _repository.GetLatestPostsPage(category, searchQuery, pageNumber, limit, cursorValue, afterCursor);
+        return View(page);
     }
 
-    public IActionResult Post(Guid id)
+    public IActionResult About()
     {
-        var post = _repository.GetPost(id);
-        if (post == null)
-            return NotFound();
-        return View(post);
+        return View();
+    }
+
+    public IActionResult AdminPanel()
+    {
+        return View();
     }
 
     [HttpGet("/image/{imageName}")]
@@ -37,5 +45,10 @@ public class HomeController : Controller
         var fileStream = _fileManager.GetFileStream(imageName);
         var extension = Path.GetExtension(imageName)[1..];
         return new FileStreamResult(fileStream, $"image/{extension}");
+    }
+
+    public IActionResult Contact()
+    {
+        return View();
     }
 }

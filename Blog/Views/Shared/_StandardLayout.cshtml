@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "_BaseLayout";
+}
+
+<div class="h-100vh flex-v flex-h-sb">
+    <div>
+        <div>
+            @await Html.PartialAsync("_Navbar")
+        </div>
+        <div>
+            @RenderBody()
+        </div>
+    </div>
+
+    <div>
+        @await Html.PartialAsync("_FooterDark")
+    </div>
+</div>
+@await RenderSectionAsync("Scripts", false)

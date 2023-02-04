@@ -1,0 +1,27 @@
+@model PostViewModel
+
+<!--suppress SpellCheckingInspection -->
+
+@section Scripts {
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/ykwva1ltgeclh054t3qb721trae0kkno8hgh0ct5xhn0hvxc/tinymce/6/plugins.min.js" referrerpolicy="origin"></script>
+    <script src="~/js/site.js"></script>
+}
+
+<div class="container mt-4">
+    <form method="post" enctype="multipart/form-data">
+        <div>
+            <input asp-for="@Model.Title" placeholder="Title">
+        </div>
+        <div>
+            <label>Cover Image</label>
+            <input asp-for="@Model.Image">
+        </div>
+        <div>
+            <textarea asp-for="Body" id="post-body">Hello, World!</textarea>
+        </div>
+        <div>
+            <button class="btn btn-secondary" type="submit">Publish</button>
+        </div>
+    </form>
+</div>

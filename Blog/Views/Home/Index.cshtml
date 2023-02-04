@@ -1,14 +1,13 @@
-@model IEnumerable<PostViewModel>
+@model PostsPageViewModel
 
-<h2>Home Page</h2>
+@if (!User.Identity!.IsAuthenticated)
+{
+    @await Html.PartialAsync("_Hero")
+}
 
-<img src="~/content/static/home.jpeg" alt="" width="500px"/>
-
-<ul>
-    @foreach (var m in Model)
-    {
-        <li>
-            <a asp-controller="Home" asp-action="Post" asp-route-id="@m.PostId">@m.Title</a>
-        </li>
-    }
-</ul>
+<div class="container mt-5 mb-5">
+    <h1>Latest Posts</h1>
+    <div class="mt-5">
+        @await Html.PartialAsync("_PostsPage", Model)
+    </div>
+</div>

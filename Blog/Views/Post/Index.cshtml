@@ -1,0 +1,23 @@
+﻿@model PostViewModel
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/@@editorjs/editorjs@latest"></script>
+    <script src="~/js/post.js"></script>
+}
+
+<div class="container mt-2" onload="renderPost('@Model.Body');">
+    <h4>@Model.Author.FirstName @Model.Author.LastName</h4>
+    <h2>@Model.Title</h2>
+    <div>
+        @if (!string.IsNullOrEmpty(Model.ImageName))
+        {
+            var imagePath = $"/image/{Model.ImageName}";
+            <img class="flex-h" src="@imagePath" alt="" width="500px"/>
+        }
+    </div>
+    <span>Posted on @Model.Created.ToString("M, yyyy")</span>
+    <div id="post-body">
+        <p>@Model.Body</p>
+    </div>
+</div>

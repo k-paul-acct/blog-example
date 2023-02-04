@@ -1,0 +1,50 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+<nav class="navbar navbar-expand-sm navbar-dark">
+    <div class="container container-fluid">
+        <a asp-controller="Home" asp-action="Index" class="navbar-brand">Ür:Blog</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-t" aria-controls="navbar-t" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse gap-3" id="navbar">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a asp-controller="Home" asp-action="Index" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Post" asp-action="Create" class="nav-link">Create Post</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Home" asp-action="About" class="nav-link">About</a>
+                </li>
+                @if (User.Identity!.IsAuthenticated && User.HasClaim(c =>
+                    c.Type == ClaimTypes.Role && c.Value == "admin"))
+                {
+                    <li class="nav-item">
+                        <a asp-controller="Home" asp-action="AdminPanel" class="nav-link">Admin Panel</a>
+                    </li>
+                }
+            </ul>
+            <form asp-controller="Home" asp-action="Index" method="get">
+                <input class="search form-control" type="search" placeholder="Search" name="searchQuery">
+            </form>
+
+            @if (User.Identity!.IsAuthenticated)
+            {
+                var firstName = User.Claims.First(c => c.Type == ClaimTypes.Name).Value;
+                <a asp-controller="Auth" asp-action="SignOut">Sign Out</a>
+                <a asp-controller="Account" asp-action="Index" class="btn btn-outline-secondary">@firstName</a>
+            }
+            else
+            {
+                <a asp-controller="Auth" asp-action="SignIn" type="button" class="btn btn-outline-secondary">Sign In</a>
+                <a asp-controller="Auth" asp-action="Register" type="button" class="btn btn-secondary">Register</a>
+            }
+        </div>
+    </div>
+</nav>

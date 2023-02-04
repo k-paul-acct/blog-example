@@ -1,0 +1,8 @@
+﻿@model Blog.ViewModels.Account.AccountViewModel
+
+<div class="container">
+    <h2>@Model.FirstName @Model.LastName</h2>
+    <span>@Model.Email</span>
+    <p>@Model.About</p>
+    <a asp-controller="Account" asp-action="ChangePersonalData">Change my data</a>
+</div>

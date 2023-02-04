@@ -1,0 +1,33 @@
+@model SignInViewModel
+
+@{
+    Layout = "_MinimalLayout";
+}
+
+<div class="mt-5">
+    <div class="h-center mb-4">
+        <h2 class="text-center">Sign In to Ür:Account</h2>
+    </div>
+    <div class="h-center">
+        <div class="card shrink">
+            <form asp-controller="Auth" asp-action="SignIn" method="post">
+                <div class="register-form-field-input mb-2">
+                    <label>Email</label>
+                    <input asp-for="EmailAddress">
+                </div>
+                <div class="register-form-field-input mb-4">
+                    <label>Password</label>
+                    <input asp-for="Password">
+                </div>
+                <div class="flex-h flex-h-sb">
+                    <div>
+                        <a asp-controller="Auth" asp-action="Register" class="btn btn-outline-secondary" type="button">Register</a>
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary" type="submit">Sign In</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

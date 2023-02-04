@@ -1,0 +1,104 @@
+@using Blog.Enums
+@model RegisterViewModel
+
+<div class="register-wrapper container">
+    <aside class="register-sub-wrapper">
+        <div class="register-sub">
+            <h1 class="text-dark">Ür:Account</h1>
+            <h3>Post what you want.<br/>Read what you need.</h3>
+        </div>
+    </aside>
+    <div class="register card">
+        <div class="register-title">
+            <h4>Join to Ür</h4>
+        </div>
+        <div class="register-form">
+            <form asp-controller="Auth" asp-action="Register" method="post">
+                <div class="register-form-field">
+                    <div class="register-form-field-name">
+                        <span>First Name</span>
+                    </div>
+                    <div class="register-form-field-input">
+                        <input asp-for="FirstName"/>
+                        <span asp-validation-for="FirstName" class="error"></span>
+                    </div>
+                </div>
+                <div class="register-form-field">
+                    <div class="register-form-field-name">
+                        <span>Last Name</span>
+                    </div>
+                    <div class="register-form-field-input">
+                        <input asp-for="LastName"/>
+                        <span asp-validation-for="LastName" class="error"></span>
+                    </div>
+                </div>
+                <div class="register-form-field">
+                    <div class="register-form-field-name">
+                        <span>Email</span>
+                    </div>
+                    <div class="register-form-field-input">
+                        <input asp-for="Email"/>
+                        <span asp-validation-for="Email" class="error"></span>
+                    </div>
+                </div>
+                <div class="register-form-field">
+                    <div class="register-form-field-name">
+                        <span>Phone Number</span>
+                    </div>
+                    <div class="register-form-field-input">
+                        <input asp-for="PhoneNumber"/>
+                        <span asp-validation-for="PhoneNumber" class="error"></span>
+                    </div>
+                </div>
+                <div class="register-form-field">
+                    <div class="register-form-field-name">
+                        <span>Password</span>
+                    </div>
+                    <div class="register-form-field-input">
+                        <input asp-for="Password"/>
+                        <span asp-validation-for="Password" class="error"></span>
+                    </div>
+                </div>
+                <div class="register-form-field">
+                    <div class="register-form-field-name">
+                        <span>Confirm Password</span>
+                    </div>
+                    <div class="register-form-field-input">
+                        <input asp-for="PasswordConfirmation"/>
+                        <span asp-validation-for="PasswordConfirmation" class="error"></span>
+                    </div>
+                </div>
+                <div class="register-form-field">
+                    <div class="register-form-field-name">
+                        <span>Birthday</span>
+                    </div>
+                    <div class="register-form-field-input">
+                        <input asp-for="DateOfBirth"/>
+                        <span asp-validation-for="DateOfBirth" class="error"></span>
+                    </div>
+                </div>
+                <div class="register-form-field">
+                    <div class="register-form-field-name">
+                        <span>Choose your Identity</span>
+                    </div>
+                    <div class="register-form-field-input">
+                        <select asp-for="Sex">
+                            <option value="@Sex.Unknown">None of the above</option>
+                            <option value="@Sex.Male">Male</option>
+                            <option value="@Sex.Female">Female</option>
+                        </select>
+                        <span asp-validation-for="Sex" class="error"></span>
+                    </div>
+                </div>
+                <div class="register-summary">
+                    <span asp-validation-summary="All" class="error"></span>
+                </div>
+                <div class="register-submit-wrapper">
+                    <div class="register-submit">
+                        <button class="btn btn-secondary" type="submit">Register</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

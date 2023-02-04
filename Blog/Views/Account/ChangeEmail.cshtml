@@ -1,0 +1,10 @@
+﻿@model Blog.ViewModels.Account.ChangeEmailViewModel
+
+<div class="container mt-2">
+    <h2>Change my email</h2>
+    <form asp-controller="Account" asp-action="ChangeEmail" method="post">
+        <label>New email</label>
+        <input asp-for="NewEmail" value="@Model.NewEmail"/>
+        <button class="btn btn-outline-secondary" type="submit">Save</button>
+    </form>
+</div>

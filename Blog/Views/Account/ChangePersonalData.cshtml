@@ -1,0 +1,11 @@
+﻿@model Blog.ViewModels.Account.AccountViewModel
+
+<div class="container mt-2">
+    <form asp-controller="Account" asp-action="ChangePersonalData" method="post">
+        <label>First Name</label>
+        <input asp-for="FirstName" value="@Model.FirstName">
+
+        <label>Last Name</label>
+        <input asp-for="LastName" value="@Model.LastName">
+    </form>
+</div>

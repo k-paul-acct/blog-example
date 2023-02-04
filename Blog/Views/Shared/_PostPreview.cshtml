@@ -1,0 +1,21 @@
+﻿@model PostViewModel
+
+<div class="post-preview">
+    <div class="post-preview-main">
+        <div>
+            <span>@Model.Author.FirstName @Model.Author.LastName</span>
+        </div>
+        <div>
+            <a asp-controller="Post" asp-action="Index" asp-route-postId="@Model.PostId">
+                <h4>@Model.Title</h4>
+            </a>
+        </div>
+        <div>
+            <span>Posted on @Model.Created.ToString("M, yyyy")</span>
+            <span>@Model.Category</span>
+        </div>
+    </div>
+    <a asp-controller="Post" asp-action="Index" asp-route-postId="@Model.PostId" class="post-preview-image-link">
+        <img src="@($"/image/{Model.ImageName}")" alt="">
+    </a>
+</div>

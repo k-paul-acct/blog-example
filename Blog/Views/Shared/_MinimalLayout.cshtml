@@ -1,0 +1,13 @@
+﻿@{
+    Layout = "_BaseLayout";
+}
+
+<main>
+    <div class="h-100vh flex-v flex-v-sb">
+        <div class="p-2">
+            @await Html.PartialAsync("_Brand")
+            @RenderBody()
+        </div>
+        @await Html.PartialAsync("_FooterLight")
+    </div>
+</main>
