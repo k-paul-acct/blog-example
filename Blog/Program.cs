@@ -15,8 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
 // Adding DB.
-builder.Services.AddDbContext<BlogDbContext>(o =>
-    o.UseSqlServer(builder.Configuration["ConnectionString"]));
+builder.Services.AddDbContext<BlogDbContext>(
+    o => o.UseNpgsql(builder.Configuration["ConnectionString"]));
 
 // Adding Identity.
 builder.Services.AddIdentityCore<BlogUser>(o =>
@@ -58,13 +58,15 @@ builder.Services.AddSingleton<IEmailService, EmailService>();
 var app = builder.Build();
 
 // Uncomment for Npgsql (PostgreSQL) DB provider.
-// AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Adding admin seed in DB.
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<BlogUser>>();
+
 context.Database.EnsureCreated();
+
 if (!context.Users.Any(x => x.NormalizedUserName == "ADMIN@ADMIN.ADMIN"))
 {
     var claims = new List<Claim>
