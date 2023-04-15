@@ -69,6 +69,12 @@ public class AuthController : Controller
             Sex = vm.Sex.ToString()
         };
         var result = await _userManager.CreateAsync(user, vm.Password);
+
+        if (!result.Succeeded)
+        {
+            return View(vm);
+        }
+
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Name, vm.FirstName));
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, vm.Email));
         if (!result.Succeeded) return View(new RegisterViewModel());
