@@ -8,6 +8,7 @@ using Blog.Models;
 using Blog.Services.EmailService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,6 +90,11 @@ if (!context.Users.Any(x => x.NormalizedUserName == "ADMIN@ADMIN.ADMIN"))
 }
 
 // app.Use here.
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAuthentication();
