@@ -44,6 +44,8 @@ public class HomeController : Controller
     {
         var fileStream = _fileManager.GetFileStream(imageName);
         var extension = Path.GetExtension(imageName)[1..];
+        if (fileStream is null) return Empty;
+
         return new FileStreamResult(fileStream, $"image/{extension}");
     }
 

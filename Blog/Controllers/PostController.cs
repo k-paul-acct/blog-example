@@ -15,10 +15,7 @@ public class PostController : Controller
     private readonly IRepository _repository;
     private readonly UserManager<BlogUser> _userManager;
 
-    public PostController(
-        IFileManager fileManager,
-        IRepository repository,
-        UserManager<BlogUser> userManager)
+    public PostController(IFileManager fileManager, IRepository repository, UserManager<BlogUser> userManager)
     {
         _fileManager = fileManager;
         _repository = repository;
@@ -47,6 +44,9 @@ public class PostController : Controller
         if (vm.Image == null) return BadRequest();
         var imagePath = await _fileManager.SaveFile(vm.Image);
         var user = await _userManager.GetUserAsync(HttpContext.User);
+
+        if (user is null) return new BadRequestResult();
+
         var blogUserId = user.Id;
         var post = new Post
         {
@@ -59,5 +59,11 @@ public class PostController : Controller
         };
         _repository.AddPost(post);
         return RedirectToAction("Index", new { postId = post.PostId });
+    }
+
+    public IActionResult Delete(Guid postId)
+    {
+        _repository.RemovePost(postId);   
+        return RedirectToAction("Index", "Home");
     }
 }

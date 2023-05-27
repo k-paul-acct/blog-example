@@ -49,6 +49,7 @@ builder.Services.ConfigureApplicationCookie(options => { options.LoginPath = "/A
 
 // Mvc things.
 builder.Services.AddMvc();
+builder.Services.AddHttpContextAccessor();
 
 // Custom services.
 builder.Services.AddScoped<IRepository, Repository>();

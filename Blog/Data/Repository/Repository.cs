@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Blog.Data.Repository.PostsFilters;
 using Blog.Models;
 using Blog.ViewModels;
@@ -9,10 +10,12 @@ namespace Blog.Data.Repository;
 public class Repository : IRepository
 {
     private readonly BlogDbContext _context;
+    private readonly IHttpContextAccessor _httpContext;
 
-    public Repository(BlogDbContext context)
+    public Repository(BlogDbContext context, IHttpContextAccessor httpContext)
     {
         _context = context;
+        _httpContext = httpContext;
     }
 
     public bool AddPost(Post post)
@@ -77,9 +80,9 @@ public class Repository : IRepository
             .OrderByDescending(x => x.Created)
             .Include(x => x.BlogUser)
             .Include(x => x.PostCategory)
-            .AsEnumerable()
-            .Select(MapPost)
             .ToList();
+        
+        var mapped = posts.Select(MapPost);
 
         return new PostsPageViewModel
         {
@@ -89,7 +92,7 @@ public class Repository : IRepository
             Limit = limit,
             CursorValueStart = posts.Count == 0 ? null : posts.First().Created,
             CursorValueEnd = posts.Count == 0 ? null : posts.Last().Created,
-            Posts = posts
+            Posts = mapped
         };
     }
 
@@ -125,12 +128,13 @@ public class Repository : IRepository
         throw new NotImplementedException();
     }
 
-    private static PostViewModel MapPost(Post post)
+    private PostViewModel MapPost(Post post)
     {
+        var isAdmin = _httpContext.HttpContext!.User.Claims.Any(x => x is { Value: "admin" });
         return new PostViewModel
         {
             PostId = post.PostId,
-            Author = MapBlogUser(post.BlogUser),
+            Author = MapBlogUser(post.BlogUser, isAdmin),
             Category = post.PostCategory.Name,
             Title = post.Title,
             Body = post.Body,
@@ -139,13 +143,14 @@ public class Repository : IRepository
         };
     }
 
-    private static BlogUserViewModel MapBlogUser(BlogUser blogUser)
+    private static BlogUserViewModel MapBlogUser(BlogUser blogUser, bool isAdmin)
     {
         return new BlogUserViewModel
         {
             FirstName = blogUser.FirstName,
             LastName = blogUser.LastName,
-            BlogUserId = blogUser.Id
+            BlogUserId = blogUser.Id,
+            IsAdmin = isAdmin
         };
     }
 

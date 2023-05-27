@@ -11,9 +11,16 @@ public class FileManager : IFileManager
         _imagesPath = configuration["Path:Images"];
     }
 
-    public FileStream GetFileStream(string fileName)
+    public FileStream? GetFileStream(string fileName)
     {
-        return new FileStream(Path.Combine(_imagesPath, fileName), FileMode.Open, FileAccess.Read);
+        try
+        {
+            return new FileStream(Path.Combine(_imagesPath, fileName), FileMode.Open, FileAccess.Read);
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
     public async Task<string> SaveFile(IFormFile file)
